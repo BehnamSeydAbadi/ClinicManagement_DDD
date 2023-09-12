@@ -1,4 +1,7 @@
+using Newtonsoft.Json;
+using System.Text;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.CommonModels;
 
 namespace AcceptanceTest.PatientDoctorInteraction;
 
@@ -6,6 +9,11 @@ namespace AcceptanceTest.PatientDoctorInteraction;
 [Scope(Feature = "Patient doctor interaction")]
 public class StepDefinitions
 {
+    private readonly HttpClient _httpClient;
+
+    public StepDefinitions(HttpClient httpClient) => _httpClient = httpClient;
+
+
     [Given(@"I am a patient")]
     public void GivenIAmAPatient()
     {
@@ -19,14 +27,30 @@ public class StepDefinitions
     }
 
     [When(@"I provide my name, contact information, and preferred date and time")]
-    public void WhenIProvideMyNameContactInformationAndPreferredDateAndTime()
+    public async Task WhenIProvideMyNameContactInformationAndPreferredDateAndTime()
     {
-        throw new PendingStepException();
+        var apiContent = ConvertToStringContent(new AppointmentDto
+        {
+            DoctorId = "",
+            PatientId = "",
+            DurationMinutes = "",
+            StartDateTime = ""
+        });
+
+        var apiResult = await _httpClient.PostAsync("api/appointment", apiContent);
     }
 
     [Then(@"the doctor should confirm the appointment")]
     public void ThenTheDoctorShouldConfirmTheAppointment()
     {
         throw new PendingStepException();
+    }
+
+
+    private static StringContent ConvertToStringContent<T>(T content)
+    {
+        var json = JsonConvert.SerializeObject(content);
+
+        return new(json, Encoding.UTF8, "application/json");
     }
 }

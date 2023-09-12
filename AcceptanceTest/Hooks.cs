@@ -8,9 +8,13 @@ namespace AcceptanceTest;
 public class Hooks
 {
     private readonly ScenarioContext _scenarioContext;
+    private readonly IObjectContainer _objectContainer;
 
-    public Hooks(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
-
+    public Hooks(ScenarioContext scenarioContext, IObjectContainer objectContainer)
+    {
+        _scenarioContext = scenarioContext;
+        _objectContainer = objectContainer;
+    }
 
     [BeforeScenario]
     public void CreateApplication()
@@ -18,5 +22,11 @@ public class Hooks
         var application = new WebApplicationFactory<Program>();
 
         _scenarioContext.Add("httpClient", application.CreateClient());
+    }
+
+    [BeforeScenario]
+    public void RegisterServices()
+    {
+        _objectContainer.RegisterInstanceAs(_scenarioContext["httpClient"], typeof(HttpClient));
     }
 }
