@@ -1,4 +1,4 @@
-﻿Feature: PatientDoctorInteraction
+﻿Feature: Patient doctor interaction
 
 Scenario: Schedule an appointment
 	Given I am a patient
