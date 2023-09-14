@@ -32,7 +32,7 @@ public class PatientTests
             birthDate: new DateOnly(year: 1997, month: 3, day: 29),
             phoneNumber: "09334155680");
 
-        patient.Schedule(doctorId: 2, durationMinutes: 15, startDateTime: DateTime.Now.AddDays(1));
+        patient.ScheduleAppointment(doctorId: 2, durationMinutes: 15, startDateTime: DateTime.Now.AddDays(1));
 
         patient.GetAppointments().Count().Should().Be(1);
     }

@@ -35,9 +35,12 @@ public class Patient : AggregateRoot
 
 
 
-    public void Schedule(int doctorId, int durationMinutes, DateTime startDateTime)
+    public void ScheduleAppointment(int doctorId, int durationMinutes, DateTime startDateTime)
     {
+        var appointment = Appointment.Schedule(doctorId, durationMinutes, startDateTime);
+        _appointments.Add(appointment);
 
+        //TODO: Raise an event
     }
 
     public IEnumerable<Appointment> GetAppointments() => _appointments.AsReadOnly();
