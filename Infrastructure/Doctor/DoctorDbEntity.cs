@@ -1,10 +1,13 @@
-﻿using Infrastructure.Common;
+﻿using Infrastructure.Appointment;
+using Infrastructure.Common;
 
 namespace Infrastructure.Doctor;
 
-public sealed record DoctorDbEntity : BaseDbEntity
+public sealed class DoctorDbEntity : BaseDbEntity
 {
     public string Name { get; set; }
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
+
+    public List<AppointmentDbEntity> Appointments { get; set; }
 }

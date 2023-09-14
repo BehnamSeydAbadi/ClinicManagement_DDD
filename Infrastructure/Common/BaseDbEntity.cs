@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Common;
 
-public abstract record BaseDbEntity
+public abstract class BaseDbEntity
 {
     public int Id { get; set; }
 }

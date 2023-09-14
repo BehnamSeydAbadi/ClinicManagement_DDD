@@ -14,6 +14,7 @@ namespace Infrastructure
         {
             modelBuilder.ApplyConfiguration(PatientConfiguration.Instance);
             modelBuilder.ApplyConfiguration(DoctorConfiguration.Instance);
+            modelBuilder.ApplyConfiguration(AppointmentConfiguration.Instance);
         }
 
         public async Task SaveChangesAsync() => await base.SaveChangesAsync();

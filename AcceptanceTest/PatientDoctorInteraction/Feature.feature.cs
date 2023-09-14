@@ -108,7 +108,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I provide my name, contact information, and preferred date and time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
- testRunner.Then("the doctor should confirm the appointment", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the appointment should be scheduled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

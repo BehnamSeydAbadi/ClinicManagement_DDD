@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Common.ValueObjects;
+using Domain.Contracts.Patient;
 
 namespace Domain.PatientManagement;
 
@@ -13,7 +14,7 @@ public class Patient : AggregateRoot
     {
         //TODO: Should write validations
 
-        return new Patient
+        var patient = new Patient
         {
             Id = id,
             Name = new Name { First = name, Last = lastName },
@@ -21,6 +22,18 @@ public class Patient : AggregateRoot
             BirthDate = new BirthDate { Value = birthDate },
             PhoneNumber = new PhoneNumber { Value = phoneNumber },
         };
+
+        patient._domainEvents.Enqueue(new PatientRegisteredDomainEvent
+        {
+            AggregateId = id,
+            Name = name,
+            LastName = lastName,
+            NationalCode = nationalCode,
+            BirthDate = birthDate,
+            PhoneNumber = phoneNumber,
+        });
+
+        return patient;
     }
 
     public static Patient Reconstitute(int id, string name, string lastName, string nationalCode, DateOnly birthDate, string phoneNumber)
@@ -38,12 +51,21 @@ public class Patient : AggregateRoot
     public void ScheduleAppointment(int id, int doctorId, int durationMinutes, DateTime startDateTime)
     {
         var appointment = Appointment.Schedule(id, doctorId, durationMinutes, startDateTime);
+
         _appointments.Add(appointment);
 
-        //TODO: Raise an event
+        _domainEvents.Enqueue(new AppointmentScheduledDomainEvent
+        {
+            AggregateId = Id,
+            Id = appointment.Id,
+            DoctorId = doctorId,
+            DurationMinutes = durationMinutes,
+            StartDateTime = startDateTime
+        });
     }
 
     public IEnumerable<Appointment> GetAppointments() => _appointments.AsReadOnly();
+
 
     public Name Name { get; private set; }
     public NationalCode NationalCode { get; private set; }

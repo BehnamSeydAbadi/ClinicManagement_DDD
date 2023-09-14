@@ -8,9 +8,12 @@ namespace Application.Appointment.Commands;
 internal class ScheduleCommandHandler : IRequestHandler<ScheduleCommand, int>
 {
     private readonly AppDbContext _dbContext;
-    public ScheduleCommandHandler(AppDbContext dbContext)
+    private readonly IMediator _mediator;
+
+    public ScheduleCommandHandler(AppDbContext dbContext, IMediator mediator)
     {
         _dbContext = dbContext;
+        _mediator = mediator;
     }
 
     public async Task<int> Handle(ScheduleCommand request, CancellationToken cancellationToken)
@@ -28,6 +31,9 @@ internal class ScheduleCommandHandler : IRequestHandler<ScheduleCommand, int>
         var appointmentId = (lastAppointment?.Id + 1) ?? 1;
 
         patient.ScheduleAppointment(appointmentId, request.DoctorId, request.DurationMinutes, request.StartDateTime);
+
+        foreach (var @event in patient.GetQueuedEvents())
+            await _mediator.Publish(@event);
 
         return appointmentId;
     }

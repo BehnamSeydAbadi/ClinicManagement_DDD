@@ -10,6 +10,8 @@ internal class AppointmentConfiguration : IEntityTypeConfiguration<AppointmentDb
 
     public void Configure(EntityTypeBuilder<AppointmentDbEntity> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(a => a.Id);
+        builder.HasOne(a => a.Patient).WithMany(p => p.Appointments).HasForeignKey(a => a.PatientId);
+        builder.HasOne(a => a.Doctor).WithMany(d => d.Appointments).HasForeignKey(a => a.DoctorId);
     }
 }

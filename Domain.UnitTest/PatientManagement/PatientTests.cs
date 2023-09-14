@@ -22,6 +22,8 @@ public class PatientTests
         patient.NationalCode.Value.Should().Be(nationalCode);
         patient.BirthDate.Value.Should().Be(birthDate);
         patient.PhoneNumber.Value.Should().Be(phoneNumber);
+
+        patient.GetQueuedEvents().Count().Should().Be(1);
     }
 
     [Fact]
