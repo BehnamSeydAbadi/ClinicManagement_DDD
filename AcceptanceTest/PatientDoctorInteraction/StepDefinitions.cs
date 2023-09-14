@@ -59,12 +59,15 @@ public class StepDefinitions
     [When(@"I provide my name, contact information, and preferred date and time")]
     public async Task WhenIProvideMyNameContactInformationAndPreferredDateAndTime()
     {
+        var doctorId = (await _dbContext.Doctors.SingleAsync()).Id;
+        var patientId = (await _dbContext.Patients.SingleAsync()).Id;
+
         var apiContent = ConvertToStringContent(new AppointmentDto
         {
-            DoctorId = "",
-            PatientId = "",
-            DurationMinutes = "",
-            StartDateTime = ""
+            DoctorId = doctorId,
+            PatientId = patientId,
+            DurationMinutes = 15,
+            StartDateTime = TimeOnly.FromDateTime(DateTime.Now)
         });
 
         var apiResult = await _httpClient.PostAsync("api/appointment", apiContent);
