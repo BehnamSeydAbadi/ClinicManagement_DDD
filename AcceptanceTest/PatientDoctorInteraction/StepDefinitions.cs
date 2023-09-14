@@ -68,7 +68,7 @@ public class StepDefinitions
             DoctorId = doctorId,
             PatientId = patientId,
             DurationMinutes = 15,
-            StartDateTime = TimeOnly.FromDateTime(DateTime.Now)
+            StartDateTime = DateTime.Now
         });
 
         var apiResult = await _httpClient.PostAsync("api/appointment", apiContent);

@@ -35,9 +35,9 @@ public class Patient : AggregateRoot
 
 
 
-    public void ScheduleAppointment(int doctorId, int durationMinutes, DateTime startDateTime)
+    public void ScheduleAppointment(int id, int doctorId, int durationMinutes, DateTime startDateTime)
     {
-        var appointment = Appointment.Schedule(doctorId, durationMinutes, startDateTime);
+        var appointment = Appointment.Schedule(id, doctorId, durationMinutes, startDateTime);
         _appointments.Add(appointment);
 
         //TODO: Raise an event
