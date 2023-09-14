@@ -1,0 +1,37 @@
+﻿using Domain.PatientManagement;
+using FluentAssertions;
+using Xunit;
+
+namespace Domain.UnitTest.PatientManagement;
+
+public class PatientTests
+{
+    [Fact]
+    public void register_new_patient()
+    {
+        var name = "behnam";
+        var lastName = "seydabadi";
+        var nationalCode = "0019936162";
+        var birthDate = new DateOnly(year: 1997, month: 3, day: 29);
+        var phoneNumber = "09334155680";
+
+        var patient = Patient.Register(1, name, lastName, nationalCode, birthDate, phoneNumber);
+
+        patient.Name.First.Should().Be(name);
+        patient.Name.Last.Should().Be(lastName);
+        patient.NationalCode.Value.Should().Be(nationalCode);
+        patient.BirthDate.Value.Should().Be(birthDate);
+        patient.PhoneNumber.Value.Should().Be(phoneNumber);
+    }
+
+    [Fact]
+    public void schedule_an_appointment()
+    {
+        throw new NotImplementedException();
+        //var patient = new Patient();
+
+        //patient.Schedule(doctorId, durationMinutes, startDateTime);
+
+        //patient.Appointments.Count.Should().Be(1);
+    }
+}
