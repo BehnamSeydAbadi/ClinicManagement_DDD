@@ -10,7 +10,7 @@ public class AppointmentController : BaseApiController
     private readonly ISender _mediator;
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] ScheduleAppointmentCommand command)
+    public async Task<IActionResult> Post([FromBody] ScheduleCommand command)
     {
         var id = await _mediator.Send(command);
         return Ok(id);

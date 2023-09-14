@@ -2,7 +2,7 @@
 
 namespace Application.Appointment.Commands;
 
-public class ScheduleAppointmentCommand : IRequest<int>
+public class ScheduleCommand : IRequest<int>
 {
     public int DoctorId { get; init; }
     public int PatientId { get; init; }

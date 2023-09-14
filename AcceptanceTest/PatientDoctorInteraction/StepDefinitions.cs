@@ -63,7 +63,7 @@ public class StepDefinitions
         var doctorId = (await _dbContext.Doctors.SingleAsync()).Id;
         var patientId = (await _dbContext.Patients.SingleAsync()).Id;
 
-        var apiContent = ConvertToStringContent(new ScheduleAppointmentCommand
+        var apiContent = ConvertToStringContent(new ScheduleCommand
         {
             DoctorId = doctorId,
             PatientId = patientId,
