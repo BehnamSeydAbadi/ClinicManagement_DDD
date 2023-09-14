@@ -1,4 +1,5 @@
-﻿using Infrastructure.Doctor;
+﻿using Infrastructure.Appointment;
+using Infrastructure.Doctor;
 using Infrastructure.Patient;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,5 +20,6 @@ namespace Infrastructure
 
         public DbSet<PatientDbEntity> Patients { get; set; }
         public DbSet<DoctorDbEntity> Doctors { get; set; }
+        public DbSet<AppointmentDbEntity> Appointments { get; set; }
     }
 }

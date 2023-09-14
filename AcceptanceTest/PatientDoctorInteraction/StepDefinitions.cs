@@ -1,8 +1,12 @@
+using Application.Appointment.Queries.ViewModels;
 using Bogus;
+using FluentAssertions;
 using Infrastructure;
 using Infrastructure.Doctor;
 using Infrastructure.Patient;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -64,12 +68,21 @@ public class StepDefinitions
         });
 
         var apiResult = await _httpClient.PostAsync("api/appointment", apiContent);
+        apiResult.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Then(@"the doctor should confirm the appointment")]
-    public void ThenTheDoctorShouldConfirmTheAppointment()
+    public async Task ThenTheDoctorShouldConfirmTheAppointment()
     {
-        throw new PendingStepException();
+        var appointment = await _dbContext.Appointments.SingleAsync();
+
+        var apiResult = await _httpClient.GetAsync($"api/appointment/{appointment.Id}");
+        apiResult.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var content = await apiResult.Content.ReadAsStringAsync();
+        var viewModel = JsonConvert.DeserializeObject<AppointmentViewModel>(content)!;
+
+        viewModel.IsConfirmed.Should().BeTrue();
     }
 
 
