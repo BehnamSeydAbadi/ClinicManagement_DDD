@@ -5,6 +5,10 @@ namespace Domain.PatientManagement;
 
 public class Patient : AggregateRoot
 {
+    private readonly List<Appointment> _appointments = new();
+
+    private Patient() { }
+
     public static Patient Register(int id, string name, string lastName, string nationalCode, DateOnly birthDate, string phoneNumber)
     {
         //TODO: Should write validations
@@ -19,7 +23,24 @@ public class Patient : AggregateRoot
         };
     }
 
-    private Patient() { }
+    public static Patient Reconstitute(int id, string name, string lastName, string nationalCode, DateOnly birthDate, string phoneNumber)
+           => new()
+           {
+               Id = id,
+               Name = new Name { First = name, Last = lastName },
+               NationalCode = new NationalCode { Value = nationalCode },
+               BirthDate = new BirthDate { Value = birthDate },
+               PhoneNumber = new PhoneNumber { Value = phoneNumber },
+           };
+
+
+
+    public void Schedule(int doctorId, int durationMinutes, DateTime startDateTime)
+    {
+
+    }
+
+    public IEnumerable<Appointment> GetAppointments() => _appointments.AsReadOnly();
 
     public Name Name { get; private set; }
     public NationalCode NationalCode { get; private set; }

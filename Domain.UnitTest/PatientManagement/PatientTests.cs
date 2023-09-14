@@ -27,11 +27,13 @@ public class PatientTests
     [Fact]
     public void schedule_an_appointment()
     {
-        throw new NotImplementedException();
-        //var patient = new Patient();
+        var patient = Patient.Reconstitute(
+            1, name: "behnam", lastName: "seydabadi", nationalCode: "0019936162",
+            birthDate: new DateOnly(year: 1997, month: 3, day: 29),
+            phoneNumber: "09334155680");
 
-        //patient.Schedule(doctorId, durationMinutes, startDateTime);
+        patient.Schedule(doctorId: 2, durationMinutes: 15, startDateTime: DateTime.Now.AddDays(1));
 
-        //patient.Appointments.Count.Should().Be(1);
+        patient.GetAppointments().Count().Should().Be(1);
     }
 }
