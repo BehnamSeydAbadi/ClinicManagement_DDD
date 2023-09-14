@@ -1,7 +1,6 @@
 ﻿using Application.IntegrationTest.Common;
-using Application.Interfaces;
 using Faker;
-using Microsoft.Extensions.Configuration;
+using Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.UnitTest.Common

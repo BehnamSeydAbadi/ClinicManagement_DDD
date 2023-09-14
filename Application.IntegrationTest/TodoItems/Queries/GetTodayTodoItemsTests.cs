@@ -23,7 +23,6 @@ namespace Application.UnitTest.TodoItems.Queries
 
             var todoContext = GetTodoContext();
 
-            await todoContext.TodoItems.AddAsync(todoyTodoItem);
             await todoContext.SaveChangesAsync();
 
             //Act

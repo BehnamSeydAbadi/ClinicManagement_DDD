@@ -1,7 +1,6 @@
-﻿using Application.TodoItems.Commands.Common;
-using Microsoft.EntityFrameworkCore;
-using Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using MediatR;
+using Infrastructure;
 
 namespace Application.TodoItems.Commands.UndoneTodoItem
 {
@@ -13,12 +12,6 @@ namespace Application.TodoItems.Commands.UndoneTodoItem
 
         public async Task<Unit> Handle(UndoneTodoItemCommand request, CancellationToken cancellationToken)
         {
-            var todoItem = await _todoContext.TodoItems.SingleOrDefaultAsync(t => t.Id == request.Id);
-
-            todoItem.MakeItUndone();
-
-            _todoContext.TodoItems.Update(todoItem);
-
             await _todoContext.SaveChangesAsync();
 
             return Unit.Value;

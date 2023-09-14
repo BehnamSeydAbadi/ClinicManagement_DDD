@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +12,9 @@ namespace Application.TodoItems.Commands.DeleteTodoItem
 
         public async Task<Unit> Handle(DeleteTodoItemCommand request, CancellationToken cancellationToken)
         {
-            var todoItem = await _todoContext.TodoItems.SingleOrDefaultAsync(t => t.Id == request.Id);
+            //var todoItem = await _todoContext.TodoItems.SingleOrDefaultAsync(t => t.Id == request.Id);
 
-            _todoContext.TodoItems.Remove(todoItem);
+            //_todoContext.TodoItems.Remove(todoItem);
 
             await _todoContext.SaveChangesAsync();
 

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Application.Interfaces;
+using Infrastructure;
 
 namespace Application.TodoItems.Commands.DeleteTodoItem
 {
@@ -11,9 +11,9 @@ namespace Application.TodoItems.Commands.DeleteTodoItem
         {
             _todoContext = todoContext;
 
-            RuleFor(c => c.Id).Must(Any).WithMessage("TodoItem not found.");
+            //RuleFor(c => c.Id).Must(Any).WithMessage("TodoItem not found.");
         }
 
-        private bool Any(int id) => _todoContext.TodoItems.Any(t => t.Id == id);
+        //private bool Any(int id) => _todoContext.TodoItems.Any(t => t.Id == id);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Application.Interfaces;
+﻿using Infrastructure;
 using MediatR;
 
 namespace Application.TodoItems.Commands.SetDueDateTodoItem
@@ -12,12 +11,12 @@ namespace Application.TodoItems.Commands.SetDueDateTodoItem
 
         public async Task<Unit> Handle(SetDueDateTodoItemCommand request, CancellationToken cancellationToken)
         {
-            var todoItem = await _todoContext.TodoItems
-                .SingleOrDefaultAsync(t => t.Id == request.Id);
+            //var todoItem = await _todoContext.TodoItems
+            //    .SingleOrDefaultAsync(t => t.Id == request.Id);
 
-            todoItem.SetDueDate(request.DueDate);
+            //todoItem.SetDueDate(request.DueDate);
 
-            _todoContext.TodoItems.Update(todoItem);
+            //_todoContext.TodoItems.Update(todoItem);
 
             await _todoContext.SaveChangesAsync();
 

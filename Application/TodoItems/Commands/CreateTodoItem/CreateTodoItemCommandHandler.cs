@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Domain.TodoItems;
+﻿using Domain.TodoItems;
+using Infrastructure;
 using MediatR;
 
 namespace Application.TodoItems.Commands.CreateTodoItem
@@ -14,7 +14,7 @@ namespace Application.TodoItems.Commands.CreateTodoItem
         {
             var todoItem = new TodoItem(request.Title);
 
-            await _todoContext.TodoItems.AddAsync(todoItem);
+            //await _todoContext.TodoItems.AddAsync(todoItem);
             await _todoContext.SaveChangesAsync();
 
             return todoItem.Id;

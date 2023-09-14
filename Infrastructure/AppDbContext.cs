@@ -1,20 +1,20 @@
-﻿using Application.Interfaces;
-using Domain.TodoItems;
-using Infrastructure.TodoItems;
+﻿using Infrastructure.Patient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class AppDbContext : DbContext, Application.Interfaces.AppDbContext
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-            => modelBuilder.ApplyConfiguration(TodoItemConfiguration.Config);
+        {
+            modelBuilder.ApplyConfiguration(PatientConfiguration.Instance);
+        }
 
         public async Task SaveChangesAsync() => await base.SaveChangesAsync();
 
-        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<PatientDbEntity> Patients { get; set; }
     }
 }

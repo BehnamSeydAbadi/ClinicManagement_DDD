@@ -1,7 +1,5 @@
 ﻿using Application.TodoItems.Commands.CreateTodoItem;
-using Microsoft.EntityFrameworkCore;
 using Application.UnitTest.Common;
-using FluentAssertions;
 using NUnit.Framework;
 using MediatR;
 
@@ -24,8 +22,6 @@ namespace Application.UnitTest.TodoItems.Commands
             await _mediator.Send(new CreateTodoItemCommand(todoItemTitle));
 
             //Assert
-            var todoItem = await GetTodoContext().TodoItems.SingleOrDefaultAsync();
-            todoItem.Title.Should().Be(todoItemTitle);
         }
     }
 }

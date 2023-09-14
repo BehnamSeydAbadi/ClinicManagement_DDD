@@ -23,7 +23,6 @@ namespace Application.IntegrationTest.TodoItems.Commands
 
             var todoContext = GetTodoContext();
 
-            await todoContext.TodoItems.AddAsync(todoItem);
             await todoContext.SaveChangesAsync();
 
             var dueDate = DateTime.UtcNow.Date;

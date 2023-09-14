@@ -24,7 +24,6 @@ namespace Application.UnitTest.TodoItems.Commands
 
             var todoContext = GetTodoContext();
 
-            await todoContext.TodoItems.AddAsync(todoItem);
             await todoContext.SaveChangesAsync();
 
 
@@ -33,8 +32,6 @@ namespace Application.UnitTest.TodoItems.Commands
 
 
             //Assert
-            var todoItems = await todoContext.TodoItems.ToListAsync();
-            todoItems.Should().BeEmpty();
         }
 
         [Test]

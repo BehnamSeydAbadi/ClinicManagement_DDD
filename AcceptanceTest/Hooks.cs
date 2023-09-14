@@ -1,5 +1,4 @@
 ﻿using BoDi;
-using Microsoft.AspNetCore.Mvc.Testing;
 using TechTalk.SpecFlow;
 
 namespace AcceptanceTest;
@@ -19,7 +18,7 @@ public class Hooks
     [BeforeScenario]
     public void CreateApplication()
     {
-        var application = new WebApplicationFactory<Program>();
+        var application = ApplicationFactory.NewApp();
 
         _scenarioContext.Add("httpClient", application.CreateClient());
     }

@@ -1,7 +1,9 @@
+using Bogus;
+using Infrastructure;
+using Infrastructure.Patient;
 using Newtonsoft.Json;
 using System.Text;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.CommonModels;
 
 namespace AcceptanceTest.PatientDoctorInteraction;
 
@@ -10,14 +12,29 @@ namespace AcceptanceTest.PatientDoctorInteraction;
 public class StepDefinitions
 {
     private readonly HttpClient _httpClient;
+    private readonly AppDbContext _dbContext;
 
-    public StepDefinitions(HttpClient httpClient) => _httpClient = httpClient;
-
+    public StepDefinitions(HttpClient httpClient, AppDbContext dbContext)
+    {
+        _httpClient = httpClient;
+        _dbContext = dbContext;
+    }
 
     [Given(@"I am a patient")]
-    public void GivenIAmAPatient()
+    public async Task GivenIAmAPatient()
     {
-        throw new PendingStepException();
+        var patient = new Faker<PatientDbEntity>()
+            .Ignore(p => p.Id)
+            .RuleFor(p => p.Name, f => f.Name.FirstName())
+            .RuleFor(p => p.LastName, f => f.Name.LastName())
+            .RuleFor(p => p.NationalCode, f => string.Join("", f.Random.Digits(10)))
+            .RuleFor(p => p.BirthDate, f => f.Person.DateOfBirth.Date)
+            .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber())
+            .Generate();
+
+        _dbContext.Patients.Add(patient);
+
+        await _dbContext.SaveChangesAsync();
     }
 
     [Given(@"I want to schedule an appointment with a doctor")]

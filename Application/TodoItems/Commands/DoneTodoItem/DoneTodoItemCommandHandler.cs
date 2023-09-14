@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Infrastructure;
 using Application.TodoItems.Commands.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +13,11 @@ namespace Application.TodoItems.Commands.DoneTodoItem
 
         public async Task<Unit> Handle(DoneTodoItemCommand request, CancellationToken cancellationToken)
         {
-            var todoItem = await _todoContext.TodoItems.SingleOrDefaultAsync(t => t.Id == request.Id);
+            //var todoItem = await _todoContext.TodoItems.SingleOrDefaultAsync(t => t.Id == request.Id);
 
-            todoItem.MakeItDone();
+            //todoItem.MakeItDone();
 
-            _todoContext.TodoItems.Update(todoItem);
+            //_todoContext.TodoItems.Update(todoItem);
 
             await _todoContext.SaveChangesAsync();
 
