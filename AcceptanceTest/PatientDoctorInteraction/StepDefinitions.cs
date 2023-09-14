@@ -1,3 +1,4 @@
+using Application.Appointment.Commands;
 using Application.Appointment.Queries.ViewModels;
 using Bogus;
 using FluentAssertions;
@@ -62,7 +63,7 @@ public class StepDefinitions
         var doctorId = (await _dbContext.Doctors.SingleAsync()).Id;
         var patientId = (await _dbContext.Patients.SingleAsync()).Id;
 
-        var apiContent = ConvertToStringContent(new AppointmentDto
+        var apiContent = ConvertToStringContent(new ScheduleAppointmentCommand
         {
             DoctorId = doctorId,
             PatientId = patientId,

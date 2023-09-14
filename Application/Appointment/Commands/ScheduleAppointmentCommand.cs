@@ -1,6 +1,8 @@
-﻿namespace AcceptanceTest.PatientDoctorInteraction;
+﻿using MediatR;
 
-public record AppointmentDto
+namespace Application.Appointment.Commands;
+
+public class ScheduleAppointmentCommand : IRequest<int>
 {
     public int DoctorId { get; init; }
     public int PatientId { get; init; }
