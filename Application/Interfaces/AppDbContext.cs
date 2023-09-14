@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Interfaces
 {
-    public interface ITodoContext
+    public interface AppDbContext
     {
         DbSet<TodoItem> TodoItems { get; set; }
 

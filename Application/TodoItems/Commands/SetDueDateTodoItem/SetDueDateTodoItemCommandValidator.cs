@@ -5,9 +5,9 @@ namespace Application.TodoItems.Commands.SetDueDateTodoItem
 {
     public class SetDueDateTodoItemCommandValidator : AbstractValidator<SetDueDateTodoItemCommand>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public SetDueDateTodoItemCommandValidator(ITodoContext todoContext)
+        public SetDueDateTodoItemCommandValidator(AppDbContext todoContext)
         {
             _todoContext = todoContext;
 

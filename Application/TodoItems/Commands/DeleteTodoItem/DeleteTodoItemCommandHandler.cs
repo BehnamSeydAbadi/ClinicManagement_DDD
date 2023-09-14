@@ -6,9 +6,9 @@ namespace Application.TodoItems.Commands.DeleteTodoItem
 {
     internal sealed class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoItemCommand>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public DeleteTodoItemCommandHandler(ITodoContext todoContext) => _todoContext = todoContext;
+        public DeleteTodoItemCommandHandler(AppDbContext todoContext) => _todoContext = todoContext;
 
         public async Task<Unit> Handle(DeleteTodoItemCommand request, CancellationToken cancellationToken)
         {

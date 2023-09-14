@@ -8,9 +8,9 @@ namespace Infrastructure.Configurations
     {
         public static void ResolveInfrastructureServices(this IServiceCollection serviceCollection, string connectionString)
         {
-            serviceCollection.AddDbContext<TodoContext>(options => options.UseSqlServer(connectionString));
+            serviceCollection.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
-            serviceCollection.AddScoped<ITodoContext>(provider => provider.GetRequiredService<TodoContext>());
+            serviceCollection.AddScoped((Func<IServiceProvider, Application.Interfaces.AppDbContext>)(provider => provider.GetRequiredService<AppDbContext>()));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Application.UnitTest.Common
                 .CreateScope();
         }
 
-        protected ITodoContext GetTodoContext() => GetService<ITodoContext>();
+        protected AppDbContext GetTodoContext() => GetService<AppDbContext>();
         protected string RandomTodoItemTitle => Name.FullName(NameFormats.WithPrefix);
 
 

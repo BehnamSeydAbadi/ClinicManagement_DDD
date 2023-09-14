@@ -7,9 +7,9 @@ namespace Application.TodoItems.Commands.UndoneTodoItem
 {
     internal sealed class UndoneTodoItemCommandHandler : IRequestHandler<UndoneTodoItemCommand>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public UndoneTodoItemCommandHandler(ITodoContext todoContext) => _todoContext = todoContext;
+        public UndoneTodoItemCommandHandler(AppDbContext todoContext) => _todoContext = todoContext;
 
         public async Task<Unit> Handle(UndoneTodoItemCommand request, CancellationToken cancellationToken)
         {

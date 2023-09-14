@@ -13,9 +13,9 @@ namespace Application.IntegrationTest.Common
         {
             builder.ConfigureServices((WebHostBuilderContext builder, IServiceCollection services) =>
             {
-                Remove<DbContextOptions<TodoContext>>(services);
+                Remove<DbContextOptions<AppDbContext>>(services);
 
-                services.AddDbContext<TodoContext>(
+                services.AddDbContext<AppDbContext>(
                     (serviceProvider, dbContextOptionsBuilder)
                         => dbContextOptionsBuilder.UseInMemoryDatabase(databaseName: "TodoDb"));
             });

@@ -6,9 +6,9 @@ namespace Application.TodoItems.Queries.GetTodayTodoItems
 {
     internal sealed class GetTodayTodoItemsQueryHandler : IRequestHandler<GetTodayTodoItemsQuery, TodoItemViewModel[]>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public GetTodayTodoItemsQueryHandler(ITodoContext todoContext) => _todoContext = todoContext;
+        public GetTodayTodoItemsQueryHandler(AppDbContext todoContext) => _todoContext = todoContext;
 
         public async Task<TodoItemViewModel[]> Handle(GetTodayTodoItemsQuery request, CancellationToken cancellationToken)
         {

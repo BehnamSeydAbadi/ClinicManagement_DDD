@@ -5,9 +5,9 @@ namespace Application.TodoItems.Commands.DeleteTodoItem
 {
     public class DeleteTodoItemCommandValidator : AbstractValidator<DeleteTodoItemCommand>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public DeleteTodoItemCommandValidator(ITodoContext todoContext)
+        public DeleteTodoItemCommandValidator(AppDbContext todoContext)
         {
             _todoContext = todoContext;
 

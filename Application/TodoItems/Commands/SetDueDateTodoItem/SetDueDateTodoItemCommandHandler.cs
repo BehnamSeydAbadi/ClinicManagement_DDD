@@ -6,9 +6,9 @@ namespace Application.TodoItems.Commands.SetDueDateTodoItem
 {
     internal class SetDueDateTodoItemCommandHandler : IRequestHandler<SetDueDateTodoItemCommand>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public SetDueDateTodoItemCommandHandler(ITodoContext todoContext) => _todoContext = todoContext;
+        public SetDueDateTodoItemCommandHandler(AppDbContext todoContext) => _todoContext = todoContext;
 
         public async Task<Unit> Handle(SetDueDateTodoItemCommand request, CancellationToken cancellationToken)
         {

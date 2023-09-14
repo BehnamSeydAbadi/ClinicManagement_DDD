@@ -7,9 +7,9 @@ namespace Application.TodoItems.Commands.DoneTodoItem
 {
     internal sealed class DoneTodoItemCommandHandler : IRequestHandler<DoneTodoItemCommand>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public DoneTodoItemCommandHandler(ITodoContext todoContext) => _todoContext = todoContext;
+        public DoneTodoItemCommandHandler(AppDbContext todoContext) => _todoContext = todoContext;
 
         public async Task<Unit> Handle(DoneTodoItemCommand request, CancellationToken cancellationToken)
         {

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class TodoContext : DbContext, ITodoContext
+    public class AppDbContext : DbContext, Application.Interfaces.AppDbContext
     {
-        public TodoContext(DbContextOptions options) : base(options) { }
+        public AppDbContext(DbContextOptions options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -6,9 +6,9 @@ namespace Application.TodoItems.Commands.DoneTodoItem
 
     public class DoneTodoItemCommandValidator : AbstractValidator<DoneTodoItemCommand>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public DoneTodoItemCommandValidator(ITodoContext todoContext)
+        public DoneTodoItemCommandValidator(AppDbContext todoContext)
         {
             _todoContext = todoContext;
             

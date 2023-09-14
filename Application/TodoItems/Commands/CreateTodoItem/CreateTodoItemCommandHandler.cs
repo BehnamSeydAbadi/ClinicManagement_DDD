@@ -6,9 +6,9 @@ namespace Application.TodoItems.Commands.CreateTodoItem
 {
     internal sealed class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, int>
     {
-        private readonly ITodoContext _todoContext;
+        private readonly AppDbContext _todoContext;
 
-        public CreateTodoItemCommandHandler(ITodoContext todoContext) => _todoContext = todoContext;
+        public CreateTodoItemCommandHandler(AppDbContext todoContext) => _todoContext = todoContext;
 
         public async Task<int> Handle(CreateTodoItemCommand request, CancellationToken cancellationToken)
         {
