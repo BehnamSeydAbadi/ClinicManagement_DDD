@@ -1,5 +1,6 @@
 using Bogus;
 using Infrastructure;
+using Infrastructure.Doctor;
 using Infrastructure.Patient;
 using Newtonsoft.Json;
 using System.Text;
@@ -38,9 +39,17 @@ public class StepDefinitions
     }
 
     [Given(@"I want to schedule an appointment with a doctor")]
-    public void GivenIWantToScheduleAnAppointmentWithADoctor()
+    public async void GivenIWantToScheduleAnAppointmentWithADoctor()
     {
-        throw new PendingStepException();
+        var doctor = new Faker<DoctorDbEntity>()
+            .RuleFor(p => p.Name, f => f.Name.FirstName())
+            .RuleFor(p => p.LastName, f => f.Name.LastName())
+            .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber())
+            .Generate();
+
+        _dbContext.Doctors.Add(doctor);
+
+        await _dbContext.SaveChangesAsync();
     }
 
     [When(@"I provide my name, contact information, and preferred date and time")]
