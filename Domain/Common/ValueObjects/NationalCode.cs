@@ -2,5 +2,7 @@
 
 public record NationalCode
 {
-    public string Value { get; set; }
+    public string Value { get; }
+
+    public NationalCode(string value) => Value = value;
 }

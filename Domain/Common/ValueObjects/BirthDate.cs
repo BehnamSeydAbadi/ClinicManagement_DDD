@@ -2,5 +2,7 @@
 
 public record BirthDate
 {
-    public DateOnly Value { get; set; }
+    public DateOnly Value { get; }
+
+    public BirthDate(DateOnly value) => Value = value;
 }

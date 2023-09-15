@@ -17,10 +17,10 @@ public class Patient : AggregateRoot
         var patient = new Patient
         {
             Id = id,
-            Name = new Name { First = name, Last = lastName },
-            NationalCode = new NationalCode { Value = nationalCode },
-            BirthDate = new BirthDate { Value = birthDate },
-            PhoneNumber = new PhoneNumber { Value = phoneNumber },
+            Name = new Name(name, lastName),
+            NationalCode = new NationalCode(nationalCode),
+            BirthDate = new BirthDate(birthDate),
+            PhoneNumber = new PhoneNumber(phoneNumber),
         };
 
         patient._domainEvents.Enqueue(new PatientRegisteredDomainEvent
@@ -40,10 +40,10 @@ public class Patient : AggregateRoot
            => new()
            {
                Id = id,
-               Name = new Name { First = name, Last = lastName },
-               NationalCode = new NationalCode { Value = nationalCode },
-               BirthDate = new BirthDate { Value = birthDate },
-               PhoneNumber = new PhoneNumber { Value = phoneNumber },
+               Name = new Name(name, lastName),
+               NationalCode = new NationalCode(nationalCode),
+               BirthDate = new BirthDate(birthDate),
+               PhoneNumber = new PhoneNumber(phoneNumber),
            };
 
 

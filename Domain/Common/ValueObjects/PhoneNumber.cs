@@ -2,5 +2,7 @@
 
 public record PhoneNumber
 {
-    public string Value { get; set; }
+    public string Value { get; }
+
+    public PhoneNumber(string value) => Value = value;
 }
