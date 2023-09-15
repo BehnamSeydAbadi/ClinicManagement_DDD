@@ -1,4 +1,5 @@
-﻿using Domain.DoctorManagement;
+﻿using Application.Common;
+using Domain.DoctorManagement;
 using Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -6,18 +7,13 @@ using DoctorAppointment = Domain.DoctorManagement.Appointment;
 
 namespace Application.DoctorManagement.Appointment.Commands;
 
-internal class ConfirmCommandHandler : IRequestHandler<ConfirmCommand>
+internal class ConfirmCommandHandler : CommandHandler<ConfirmCommand, Unit>
 {
     private readonly AppDbContext _dbContext;
-    private readonly IMediator _mediator;
 
-    public ConfirmCommandHandler(AppDbContext dbContext, IMediator mediator)
-    {
-        _dbContext = dbContext;
-        _mediator = mediator;
-    }
+    public ConfirmCommandHandler(AppDbContext dbContext, IMediator mediator) : base(mediator) => _dbContext = dbContext;
 
-    public async Task<Unit> Handle(ConfirmCommand request, CancellationToken cancellationToken)
+    public override async Task<Unit> Handle(ConfirmCommand request, CancellationToken cancellationToken)
     {
         var appointmentDbEntity = await _dbContext.Appointments
             .Include(a => a.Doctor).SingleOrDefaultAsync(a => a.Id == request.Id);
@@ -37,8 +33,7 @@ internal class ConfirmCommandHandler : IRequestHandler<ConfirmCommand>
 
         doctor.ConfirmAppointment(request.Id);
 
-        foreach (var @event in doctor.GetQueuedEvents())
-            await _mediator.Publish(@event);
+        await PublishAsync(doctor.GetQueuedEvents());
 
         return Unit.Value;
     }
