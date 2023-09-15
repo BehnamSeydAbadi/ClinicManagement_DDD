@@ -1,4 +1,5 @@
-﻿using Application.Appointment.Commands;
+﻿using Application.DoctorManagement.Appointment.Commands;
+using Application.PatientManagement.Appointment.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common;
@@ -14,8 +15,14 @@ public class AppointmentController : BaseApiController
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] ScheduleCommand command)
     {
-
         var id = await _mediator.Send(command);
         return Ok(id);
+    }
+
+    [HttpPatch("{id}/confirm")]
+    public async Task<IActionResult> Confirm(int id)
+    {
+        await _mediator.Send(new ConfirmCommand(id));
+        return Ok();
     }
 }

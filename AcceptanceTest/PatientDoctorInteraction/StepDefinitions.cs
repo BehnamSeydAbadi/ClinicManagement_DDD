@@ -1,7 +1,8 @@
-using Application.Appointment.Commands;
+using Application.PatientManagement.Appointment.Commands;
 using Bogus;
 using FluentAssertions;
 using Infrastructure;
+using Infrastructure.Appointment;
 using Infrastructure.Doctor;
 using Infrastructure.Patient;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,55 @@ public class StepDefinitions
         await _dbContext.SaveChangesAsync();
     }
 
+    [Given(@"I am a doctor")]
+    public async Task GivenIAmADoctor()
+    {
+        var doctor = new Faker<DoctorDbEntity>()
+            .Ignore(d => d.Id)
+            .RuleFor(d => d.Name, f => f.Name.FirstName())
+            .RuleFor(d => d.LastName, f => f.Name.LastName())
+            .RuleFor(d => d.PhoneNumber, f => f.Phone.PhoneNumber())
+            .Generate();
+
+        _dbContext.Doctors.Add(doctor);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    [Given(@"I have received an appointment request from a patient")]
+    public async Task GivenIHaveReceivedAnAppointmentRequestFromAPatient()
+    {
+        var patient = new Faker<PatientDbEntity>()
+            .Ignore(p => p.Id)
+            .RuleFor(p => p.Name, f => f.Name.FirstName())
+            .RuleFor(p => p.LastName, f => f.Name.LastName())
+            .RuleFor(p => p.NationalCode, f => string.Join("", f.Random.Digits(10)))
+            .RuleFor(p => p.BirthDate, f => f.Person.DateOfBirth.Date)
+            .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber())
+            .Generate();
+
+        _dbContext.Patients.Add(patient);
+
+        await _dbContext.SaveChangesAsync();
+
+
+        var doctor = await _dbContext.Doctors.SingleAsync();
+
+
+        var appointment = new AppointmentDbEntity
+        {
+            Patient = patient,
+            Doctor = doctor,
+            DurationMinutes = 15,
+            StartDateTime = DateTime.Now
+        };
+
+        _dbContext.Appointments.Add(appointment);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+
     [When(@"I provide my name, contact information, and preferred date and time")]
     public async Task WhenIProvideMyNameContactInformationAndPreferredDateAndTime()
     {
@@ -74,12 +124,33 @@ public class StepDefinitions
         apiResult.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
+    [When(@"I confirm the appointment with the patient")]
+    public async Task WhenIConfirmTheAppointmentWithThePatient()
+    {
+        var appointmentId = (await _dbContext.Appointments.SingleAsync()).Id;
+
+        var apiResult = await _httpClient.PatchAsync($"api/appointment/{appointmentId}/confirm", null);
+        apiResult.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+
+
     [Then(@"the appointment should be scheduled")]
     public async Task ThenTheAppointmentShouldBeScheduled()
     {
         var appointment = await _dbContext.Appointments.SingleAsync();
         appointment.Should().NotBeNull();
     }
+
+    [Then(@"I see the appointment as confirmed")]
+    public async Task ThenISeeTheAppointmentAsConfirmed()
+    {
+        var appointment = await _dbContext.Appointments.SingleAsync();
+        appointment.Should().NotBeNull();
+        appointment.IsConfirmed.Should().BeTrue();
+    }
+
+
 
 
     private static StringContent ConvertToStringContent<T>(T content)

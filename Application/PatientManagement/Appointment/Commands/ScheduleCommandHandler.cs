@@ -3,7 +3,7 @@ using Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Appointment.Commands;
+namespace Application.PatientManagement.Appointment.Commands;
 
 internal class ScheduleCommandHandler : IRequestHandler<ScheduleCommand, int>
 {
@@ -28,7 +28,7 @@ internal class ScheduleCommandHandler : IRequestHandler<ScheduleCommand, int>
 
         var lastAppointment = await _dbContext.Appointments.OrderByDescending(a => a.Id).LastOrDefaultAsync();
 
-        var appointmentId = (lastAppointment?.Id + 1) ?? 1;
+        var appointmentId = lastAppointment?.Id + 1 ?? 1;
 
         patient.ScheduleAppointment(appointmentId, request.DoctorId, request.DurationMinutes, request.StartDateTime);
 

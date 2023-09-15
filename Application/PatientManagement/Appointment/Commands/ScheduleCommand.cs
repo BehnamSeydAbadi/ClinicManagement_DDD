@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Appointment.Commands;
+namespace Application.PatientManagement.Appointment.Commands;
 
 public class ScheduleCommand : IRequest<int>
 {

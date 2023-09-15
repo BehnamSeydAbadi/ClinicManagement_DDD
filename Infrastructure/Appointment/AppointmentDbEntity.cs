@@ -10,6 +10,8 @@ public sealed class AppointmentDbEntity : BaseDbEntity
     public int DoctorId { get; set; }
     public int DurationMinutes { get; set; }
     public DateTime StartDateTime { get; set; }
+    public bool IsConfirmed { get; set; }
+
 
     public PatientDbEntity Patient { get; set; }
     public DoctorDbEntity Doctor { get; set; }

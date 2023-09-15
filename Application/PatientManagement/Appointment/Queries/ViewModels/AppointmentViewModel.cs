@@ -1,4 +1,4 @@
-﻿namespace Application.Appointment.Queries.ViewModels;
+﻿namespace Application.PatientManagement.Appointment.Queries.ViewModels;
 
 public sealed record AppointmentViewModel
 {
