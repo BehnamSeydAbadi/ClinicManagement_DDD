@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts.DoctorManagement;
 using Domain.DoctorManagement;
+using Domain.DoctorManagement.Exceptions;
 using FluentAssertions;
 using Xunit;
 
@@ -40,7 +41,7 @@ public class DoctorTests
 
         var appointment = Appointment.Reconstitute(
             appointmentId, patientId: 3, durationMinutes: 15,
-            startDateTime: DateTime.Now, isConfirmed: true);
+            startDateTime: DateTime.Now, isConfirmed: false);
 
         var doctor = Doctor.Reconstitute(
             4, name: "behnam", lastName: "seydAbadi",
@@ -54,5 +55,25 @@ public class DoctorTests
 
         var expectingDomainEvent = new AppointmentConfirmedDomainEvent(doctor.Id, appointmentId);
         doctor.GetQueuedEvents().Contains(expectingDomainEvent).Should().BeTrue();
+    }
+
+    [Fact]
+    public void confirm_an_already_confirmed_appointment_shouldThrowException()
+    {
+        var appointmentId = 1;
+
+        var appointment = Appointment.Reconstitute(
+            appointmentId, patientId: 3, durationMinutes: 15,
+            startDateTime: DateTime.Now, isConfirmed: true);
+
+        var doctor = Doctor.Reconstitute(
+            4, name: "behnam", lastName: "seydAbadi",
+            phoneNumber: "09334255888", new[] { appointment });
+
+
+        Action action = () => doctor.ConfirmAppointment(appointmentId);
+
+
+        action.Should().ThrowExactly<AppointmentIsAlreadyConfirmedException>();
     }
 }

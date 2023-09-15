@@ -1,4 +1,5 @@
 using Application.PatientManagement.Appointment.Commands;
+using Application.PatientManagement.Appointment.Queries.ViewModels;
 using Bogus;
 using FluentAssertions;
 using Infrastructure;
@@ -7,6 +8,7 @@ using Infrastructure.Doctor;
 using Infrastructure.Patient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Presentation.Common;
 using System.Net;
 using System.Text;
 using TechTalk.SpecFlow;
@@ -49,7 +51,7 @@ public class StepDefinitions
         var doctor = new Faker<DoctorDbEntity>()
             .RuleFor(p => p.Name, f => f.Name.FirstName())
             .RuleFor(p => p.LastName, f => f.Name.LastName())
-            .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber())
+            .RuleFor(p => p.PhoneNumber, f => f.Phone.PhoneNumber(format: "###-###-####"))
             .Generate();
 
         _dbContext.Doctors.Add(doctor);
@@ -145,7 +147,15 @@ public class StepDefinitions
     [Then(@"I see the appointment as confirmed")]
     public async Task ThenISeeTheAppointmentAsConfirmed()
     {
-        var appointment = await _dbContext.Appointments.SingleAsync();
+        var appointmentId = (await _dbContext.Appointments.SingleAsync()).Id;
+
+        var apiResult = await _httpClient.GetAsync($"api/appointment/{appointmentId}");
+
+        var jsonContent = await apiResult.Content.ReadAsStringAsync();
+
+        var apiOutput = JsonConvert.DeserializeObject<Output>(jsonContent)!;
+        var appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(apiOutput.Data.ToString())!;
+
         appointment.Should().NotBeNull();
         appointment.IsConfirmed.Should().BeTrue();
     }

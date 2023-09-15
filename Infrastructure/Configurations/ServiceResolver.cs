@@ -1,4 +1,6 @@
-﻿using Domain.Contracts.PatientManagement;
+﻿using Domain.Contracts.DoctorManagement;
+using Domain.Contracts.PatientManagement;
+using Infrastructure.Doctor.DomainEventHandler;
 using Infrastructure.Patient.DomainEventHandler;
 using Infrastructure.Patient.Projectors;
 using MediatR;
@@ -15,6 +17,7 @@ namespace Infrastructure.Configurations
 
             serviceCollection.AddScoped<INotificationHandler<PatientRegisteredDomainEvent>, PatientRegisteredDomainEventHandler>();
             serviceCollection.AddScoped<INotificationHandler<AppointmentScheduledDomainEvent>, AppointmentScheduledDomainEventHandler>();
+            serviceCollection.AddScoped<INotificationHandler<AppointmentConfirmedDomainEvent>, AppointmentConfirmedDomainEventHandler>();
         }
     }
 }

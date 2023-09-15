@@ -6,16 +6,18 @@
         {
             if (data is null && error is null)
                 throw new InvalidOperationException("Output should not be empty of data and error.");
-            
+
             Data = data;
             Error = error;
         }
 
+        public Output() { }
+
         public static Output Create(object data) => new(data, null);
         public static Output Create(Error error) => new Output(null, error);
 
-        public object? Data { get; private set; }
-        public Error? Error { get; private set; }
+        public object? Data { get; set; }
+        public Error? Error { get; set; }
     }
 
     public class Error

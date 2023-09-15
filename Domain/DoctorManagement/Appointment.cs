@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.DoctorManagement.Exceptions;
 
 namespace Domain.DoctorManagement;
 
@@ -18,7 +19,8 @@ public class Appointment : Entity
 
     internal void Confirm()
     {
-        //TODO: Validate it's not confiremd before
+        if (IsConfirmed is true)
+            AppointmentIsAlreadyConfirmedException.Throw();
 
         IsConfirmed = true;
     }

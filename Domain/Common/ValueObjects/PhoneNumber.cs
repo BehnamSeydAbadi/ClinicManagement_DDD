@@ -9,9 +9,6 @@ public record PhoneNumber
         if (string.IsNullOrWhiteSpace(value))
             ArgumentIsNullException.Throw("phone number");
 
-        if (value.Any(c => char.IsDigit(c) is false))
-            InvalidArgumentException.Throw("phone number");
-
         Value = value;
     }
 
