@@ -1,4 +1,5 @@
-﻿using Domain.DoctorManagement;
+﻿using Domain.Contracts.DoctorManagement;
+using Domain.DoctorManagement;
 using FluentAssertions;
 using Xunit;
 
@@ -14,23 +15,44 @@ public class DoctorTests
         var lastName = "seydAbadi";
         var phoneNumber = "09334255888";
 
-        var doctor = Doctor.Reconstitute(id, "behnam", "seydAbadi", "09334255888");
+        var appointment = Appointment.Reconstitute(
+            id: 2, patientId: 3, durationMinutes: 15,
+            startDateTime: DateTime.Now, isConfirmed: true);
+
+
+        var doctor = Doctor.Reconstitute(
+            id, name: "behnam", lastName: "seydAbadi",
+            phoneNumber: "09334255888", new[] { appointment });
+
 
         doctor.Id.Should().Be(id);
         doctor.Name.First.Should().Be(firstName);
         doctor.Name.Last.Should().Be(lastName);
         doctor.PhoneNumber.Value.Should().Be(phoneNumber);
+
+        doctor.GetAppointments().Contains(appointment).Should().BeTrue();
     }
 
     [Fact]
     public void confirm_appointment()
     {
-        //var doctor = Doctor.Reconstitute(2, "behnam", "seydAbadi", "09334255888");
+        var appointmentId = 1;
 
-        //var appointmentId = 1;
+        var appointment = Appointment.Reconstitute(
+            appointmentId, patientId: 3, durationMinutes: 15,
+            startDateTime: DateTime.Now, isConfirmed: true);
 
-        //doctor.ConfirmAppointment(appointmentId);
+        var doctor = Doctor.Reconstitute(
+            4, name: "behnam", lastName: "seydAbadi",
+            phoneNumber: "09334255888", new[] { appointment });
 
-        //doctor.GetAppointments().Single().IsConfirmed.Should().BeTrue();
+
+        doctor.ConfirmAppointment(appointmentId);
+
+
+        doctor.GetAppointments().Single().IsConfirmed.Should().BeTrue();
+
+        var expectingDomainEvent = new AppointmentConfirmedDomainEvent(doctor.Id, appointmentId);
+        doctor.GetQueuedEvents().Contains(expectingDomainEvent).Should().BeTrue();
     }
 }

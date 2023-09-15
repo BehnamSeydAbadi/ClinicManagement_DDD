@@ -1,4 +1,4 @@
-﻿using Domain.Contracts.Patient;
+﻿using Domain.Contracts.PatientManagement;
 using MediatR;
 
 namespace Infrastructure.Patient.Projectors;

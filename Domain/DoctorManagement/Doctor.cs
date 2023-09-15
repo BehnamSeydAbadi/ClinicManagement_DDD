@@ -1,17 +1,38 @@
 ﻿using Domain.Common;
 using Domain.Common.ValueObjects;
+using Domain.Contracts.DoctorManagement;
 
 namespace Domain.DoctorManagement;
 
 public class Doctor : AggregateRoot
 {
-    public static Doctor Reconstitute(int id, string name, string lastName, string phoneNumber)
-           => new()
-           {
-               Id = id,
-               Name = new Name(name, lastName),
-               PhoneNumber = new PhoneNumber(phoneNumber),
-           };
+    private readonly List<Appointment> _appointments = new();
+
+    public static Doctor Reconstitute(
+           int id, string name, string lastName, string phoneNumber,
+           IEnumerable<Appointment> appointments)
+    {
+        var doctor = new Doctor()
+        {
+            Id = id,
+            Name = new Name(name, lastName),
+            PhoneNumber = new PhoneNumber(phoneNumber),
+        };
+
+        doctor._appointments.AddRange(appointments);
+
+        return doctor;
+    }
+
+    public void ConfirmAppointment(int appointmentId)
+    {
+        var appointment = _appointments.Single(a => a.Id == appointmentId);
+        appointment.Confirm();
+        Enqueue(new AppointmentConfirmedDomainEvent(Id, appointmentId));
+    }
+
+    public IReadOnlyList<Appointment> GetAppointments()
+           => _appointments.ToList().AsReadOnly();
 
     private Doctor() { }
 

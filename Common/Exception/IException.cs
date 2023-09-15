@@ -1,4 +1,3 @@
-﻿namespace Common.Exception
-{
-    public interface IException { }
-}
+﻿namespace Common.Exception;
+
+public interface IException { }

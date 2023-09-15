@@ -1,4 +1,4 @@
-﻿using Domain.Contracts.Patient;
+﻿using Domain.Contracts.PatientManagement;
 using Infrastructure.Patient.DomainEventHandler;
 using Infrastructure.Patient.Projectors;
 using MediatR;

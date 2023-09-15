@@ -1,6 +1,6 @@
 ﻿using Domain.Contracts.Common;
 
-namespace Domain.Contracts.Patient;
+namespace Domain.Contracts.PatientManagement;
 
 public class AppointmentScheduledDomainEvent : DomainEvent
 {

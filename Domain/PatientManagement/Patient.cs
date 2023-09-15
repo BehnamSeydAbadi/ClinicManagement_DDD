@@ -1,6 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Common.ValueObjects;
-using Domain.Contracts.Patient;
+using Domain.Contracts.PatientManagement;
 
 namespace Domain.PatientManagement;
 
@@ -23,7 +23,7 @@ public class Patient : AggregateRoot
             PhoneNumber = new PhoneNumber(phoneNumber),
         };
 
-        patient._domainEvents.Enqueue(new PatientRegisteredDomainEvent
+        patient.Enqueue(new PatientRegisteredDomainEvent
         {
             AggregateId = id,
             Name = name,
@@ -54,7 +54,7 @@ public class Patient : AggregateRoot
 
         _appointments.Add(appointment);
 
-        _domainEvents.Enqueue(new AppointmentScheduledDomainEvent
+        Enqueue(new AppointmentScheduledDomainEvent
         {
             AggregateId = Id,
             Id = appointment.Id,
