@@ -8,6 +8,20 @@ public class GeneralPractitioner : AggregateRoot
 {
     private readonly List<Appointment> _appointments = new();
 
+    public static GeneralPractitioner Hire(int id, string name, string lastName, string phoneNumber)
+    {
+        var doctor = new GeneralPractitioner()
+        {
+            Id = id,
+            Name = new Name(name, lastName),
+            PhoneNumber = new PhoneNumber(phoneNumber),
+        };
+
+        doctor.Enqueue(new AGeneralPractitionerHiredDomainEvent(id, name, lastName, phoneNumber));
+
+        return doctor;
+    }
+
     public static GeneralPractitioner Reconstitute(
            int id, string name, string lastName, string phoneNumber,
            IEnumerable<Appointment> appointments)
@@ -33,6 +47,8 @@ public class GeneralPractitioner : AggregateRoot
 
     public IReadOnlyList<Appointment> GetAppointments()
            => _appointments.ToList().AsReadOnly();
+
+
 
     private GeneralPractitioner() { }
 

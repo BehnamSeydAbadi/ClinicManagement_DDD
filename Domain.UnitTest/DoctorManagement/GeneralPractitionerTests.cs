@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Domain.UnitTest.DoctorManagement;
 
-public class DoctorTests
+public class GeneralPractitionerTests
 {
     [Fact]
     public void reconstitute_doctor()
@@ -75,5 +75,26 @@ public class DoctorTests
 
 
         action.Should().ThrowExactly<AppointmentIsAlreadyConfirmedException>();
+    }
+
+    [Fact]
+    public void hire_doctor()
+    {
+        var id = 1;
+        var firstName = "behnam";
+        var lastName = "seydAbadi";
+        var phoneNumber = "09334255888";
+
+        var doctor = GeneralPractitioner.Hire(
+            id, name: "behnam", lastName: "seydAbadi",
+            phoneNumber: "09334255888");
+
+
+        doctor.Id.Should().Be(id);
+        doctor.Name.First.Should().Be(firstName);
+        doctor.Name.Last.Should().Be(lastName);
+        doctor.PhoneNumber.Value.Should().Be(phoneNumber);
+        doctor.GetAppointments().Should().BeEmpty();
+        doctor.GetQueuedEvents().Contains(new AGeneralPractitionerHiredDomainEvent(id, firstName, lastName, phoneNumber)).Should().BeTrue();
     }
 }
