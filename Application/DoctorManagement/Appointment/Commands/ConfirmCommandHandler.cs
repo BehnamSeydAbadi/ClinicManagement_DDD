@@ -27,7 +27,7 @@ internal class ConfirmCommandHandler : CommandHandler<ConfirmCommand, Unit>
             appointmentDbEntity.DurationMinutes, appointmentDbEntity.StartDateTime,
             appointmentDbEntity.IsConfirmed);
 
-        var doctor = Doctor.Reconstitute(
+        var doctor = GeneralPractitioner.Reconstitute(
             doctorDbEntity.Id, doctorDbEntity.Name, doctorDbEntity.LastName,
             doctorDbEntity.PhoneNumber, new[] { appointment });
 

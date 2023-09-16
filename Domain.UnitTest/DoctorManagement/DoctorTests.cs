@@ -21,7 +21,7 @@ public class DoctorTests
             startDateTime: DateTime.Now, isConfirmed: true);
 
 
-        var doctor = Doctor.Reconstitute(
+        var doctor = GeneralPractitioner.Reconstitute(
             id, name: "behnam", lastName: "seydAbadi",
             phoneNumber: "09334255888", new[] { appointment });
 
@@ -43,7 +43,7 @@ public class DoctorTests
             appointmentId, patientId: 3, durationMinutes: 15,
             startDateTime: DateTime.Now, isConfirmed: false);
 
-        var doctor = Doctor.Reconstitute(
+        var doctor = GeneralPractitioner.Reconstitute(
             4, name: "behnam", lastName: "seydAbadi",
             phoneNumber: "09334255888", new[] { appointment });
 
@@ -66,7 +66,7 @@ public class DoctorTests
             appointmentId, patientId: 3, durationMinutes: 15,
             startDateTime: DateTime.Now, isConfirmed: true);
 
-        var doctor = Doctor.Reconstitute(
+        var doctor = GeneralPractitioner.Reconstitute(
             4, name: "behnam", lastName: "seydAbadi",
             phoneNumber: "09334255888", new[] { appointment });
 

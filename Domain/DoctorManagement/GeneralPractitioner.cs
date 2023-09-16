@@ -4,15 +4,15 @@ using Domain.Contracts.DoctorManagement.Events;
 
 namespace Domain.DoctorManagement;
 
-public class Doctor : AggregateRoot
+public class GeneralPractitioner : AggregateRoot
 {
     private readonly List<Appointment> _appointments = new();
 
-    public static Doctor Reconstitute(
+    public static GeneralPractitioner Reconstitute(
            int id, string name, string lastName, string phoneNumber,
            IEnumerable<Appointment> appointments)
     {
-        var doctor = new Doctor()
+        var doctor = new GeneralPractitioner()
         {
             Id = id,
             Name = new Name(name, lastName),
@@ -34,7 +34,7 @@ public class Doctor : AggregateRoot
     public IReadOnlyList<Appointment> GetAppointments()
            => _appointments.ToList().AsReadOnly();
 
-    private Doctor() { }
+    private GeneralPractitioner() { }
 
     public Name Name { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
