@@ -10,9 +10,10 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<DoctorDbEntity>
 
     public void Configure(EntityTypeBuilder<DoctorDbEntity> builder)
     {
-        builder.HasKey(p => p.Id);
-        builder.Property(p => p.Name).HasMaxLength(64).IsRequired();
-        builder.Property(p => p.LastName).HasMaxLength(128).IsRequired();
-        builder.Property(p => p.PhoneNumber).HasMaxLength(11).IsRequired();
+        builder.HasKey(d => d.Id);
+        builder.Property(d => d.Name).HasMaxLength(64).IsRequired();
+        builder.Property(d => d.LastName).HasMaxLength(128).IsRequired();
+        builder.Property(d => d.PhoneNumber).HasMaxLength(11).IsRequired();
+        builder.Property(d => d.Type).HasConversion<int>().IsRequired();
     }
 }

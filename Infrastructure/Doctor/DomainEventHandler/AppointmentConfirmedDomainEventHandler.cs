@@ -1,4 +1,4 @@
-﻿using Domain.Contracts.DoctorManagement;
+﻿using Domain.Contracts.DoctorManagement.Events;
 using MediatR;
 
 namespace Infrastructure.Doctor.DomainEventHandler;

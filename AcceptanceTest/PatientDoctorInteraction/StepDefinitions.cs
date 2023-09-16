@@ -1,6 +1,7 @@
 using Application.PatientManagement.Appointment.Commands;
 using Application.PatientManagement.Appointment.Queries.ViewModels;
 using Bogus;
+using Domain.Contracts.DoctorManagement.Enums;
 using FluentAssertions;
 using Infrastructure;
 using Infrastructure.Appointment;
@@ -8,7 +9,6 @@ using Infrastructure.Doctor;
 using Infrastructure.Patient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Presentation.Common;
 using System.Net;
 using System.Text;
 using TechTalk.SpecFlow;
@@ -21,9 +21,11 @@ public class StepDefinitions
 {
     private readonly HttpClient _httpClient;
     private readonly AppDbContext _dbContext;
+    private readonly ScenarioContext _scenarioContext;
 
-    public StepDefinitions(HttpClient httpClient, AppDbContext dbContext)
+    public StepDefinitions(ScenarioContext scenarioContext, HttpClient httpClient, AppDbContext dbContext)
     {
+        _scenarioContext = scenarioContext;
         _httpClient = httpClient;
         _dbContext = dbContext;
     }
@@ -46,7 +48,7 @@ public class StepDefinitions
     }
 
     [Given(@"I want to schedule an appointment with a doctor")]
-    public async void GivenIWantToScheduleAnAppointmentWithADoctor()
+    public async Task GivenIWantToScheduleAnAppointmentWithADoctor()
     {
         var doctor = new Faker<DoctorDbEntity>()
             .RuleFor(p => p.Name, f => f.Name.FirstName())
@@ -107,6 +109,23 @@ public class StepDefinitions
         await _dbContext.SaveChangesAsync();
     }
 
+    [Given(@"I want to schedule an appointment with a general practitioner")]
+    public async Task GivenIWantToScheduleAnAppointmentWithAGeneralPractitioner()
+    {
+        var doctor = new Faker<DoctorDbEntity>()
+             .Ignore(d => d.Id)
+             .RuleFor(d => d.Name, f => f.Name.FirstName())
+             .RuleFor(d => d.LastName, f => f.Name.LastName())
+             .RuleFor(d => d.PhoneNumber, f => f.Phone.PhoneNumber())
+             .RuleFor(d => d.Type, DoctorType.GeneralPractitioner)
+             .Generate();
+
+        _dbContext.Doctors.Add(doctor);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+
 
     [When(@"I provide my name, contact information, and preferred date and time")]
     public async Task WhenIProvideMyNameContactInformationAndPreferredDateAndTime()
@@ -135,6 +154,27 @@ public class StepDefinitions
         apiResult.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
+    [When(@"I schedule an appointment for (.*) minutes")]
+    public async Task WhenIScheduleAnAppointmentForMinutes(int durationMinutes)
+    {
+        var doctorId = (await _dbContext.Doctors.SingleAsync()).Id;
+        var patientId = (await _dbContext.Patients.SingleAsync()).Id;
+
+        var apiContent = ConvertToStringContent(new ScheduleCommand
+        {
+            DoctorId = doctorId,
+            PatientId = patientId,
+            DurationMinutes = durationMinutes,
+            StartDateTime = DateTime.Now
+        });
+
+        var apiResult = await _httpClient.PostAsync("api/appointment", apiContent);
+
+        if (apiResult.IsSuccessStatusCode) return;
+
+        _scenarioContext.Add("error", apiResult.ToOutput().Error.Title);
+    }
+
 
 
     [Then(@"the appointment should be scheduled")]
@@ -150,14 +190,16 @@ public class StepDefinitions
         var appointmentId = (await _dbContext.Appointments.SingleAsync()).Id;
 
         var apiResult = await _httpClient.GetAsync($"api/appointment/{appointmentId}");
-
-        var jsonContent = await apiResult.Content.ReadAsStringAsync();
-
-        var apiOutput = JsonConvert.DeserializeObject<Output>(jsonContent)!;
-        var appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(apiOutput.Data.ToString())!;
+        var appointment = apiResult.To<AppointmentViewModel>();
 
         appointment.Should().NotBeNull();
         appointment.IsConfirmed.Should().BeTrue();
+    }
+
+    [Then(@"I should see '([^']*)' as the error message")]
+    public void ThenIShouldSeeAsTheErrorMessage(string errorMessage)
+    {
+        _scenarioContext["error"].ToString().Should().Be(errorMessage);
     }
 
 

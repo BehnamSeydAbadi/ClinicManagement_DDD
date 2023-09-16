@@ -1,6 +1,6 @@
 ﻿using Domain.Contracts.Common;
 
-namespace Domain.Contracts.DoctorManagement;
+namespace Domain.Contracts.DoctorManagement.Events;
 
 public class AppointmentConfirmedDomainEvent : DomainEvent
 {
@@ -16,7 +16,7 @@ public class AppointmentConfirmedDomainEvent : DomainEvent
     {
         var that = obj as AppointmentConfirmedDomainEvent;
 
-        return this.GetHashCode() == that.GetHashCode();
+        return GetHashCode() == that.GetHashCode();
     }
 
     public override int GetHashCode() => $"{AggregateId}{Id}".GetHashCode();

@@ -2,7 +2,6 @@
 using Domain.PatientManagement;
 using Infrastructure;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.PatientManagement.Appointment.Commands;
 

@@ -1,4 +1,4 @@
-﻿using Domain.Contracts.DoctorManagement;
+﻿using Domain.Contracts.DoctorManagement.Events;
 using Domain.DoctorManagement;
 using Domain.DoctorManagement.Exceptions;
 using FluentAssertions;

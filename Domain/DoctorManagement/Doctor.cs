@@ -1,6 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Common.ValueObjects;
-using Domain.Contracts.DoctorManagement;
+using Domain.Contracts.DoctorManagement.Events;
 
 namespace Domain.DoctorManagement;
 

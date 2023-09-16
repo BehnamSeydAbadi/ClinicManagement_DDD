@@ -1,4 +1,4 @@
-﻿using Domain.Contracts.DoctorManagement;
+﻿using Domain.Contracts.DoctorManagement.Events;
 using Domain.Contracts.PatientManagement;
 using Infrastructure.Doctor.DomainEventHandler;
 using Infrastructure.Patient.DomainEventHandler;
